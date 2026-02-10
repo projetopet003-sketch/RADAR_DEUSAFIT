@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>BIO-LAB | Scanner VFC</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Montserrat:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body { font-family: 'Montserrat', sans-serif; background: #000; color: #fff; overflow: hidden; margin: 0; padding: 0; }
+        .font-tech { font-family: 'Rajdhani', sans-serif; }
+        
+        /* ANIMAÇÕES */
+        .scan-line {
+            position: absolute; width: 100%; height: 2px;
+            background: #a855f7; box-shadow: 0 0 15px #a855f7;
+            animation: scan 2s linear infinite;
+        }
+        @keyframes scan { 0% { top: 0%; opacity: 0; } 50% { opacity: 1; } 100% { top: 100%; opacity: 0; } }
+        .pulse-ring { animation: pulse-ring 2s infinite; }
+        @keyframes pulse-ring { 0% { transform: scale(0.8); opacity: 0.5; } 100% { transform: scale(1.3); opacity: 0; } }
+
+        /* GLASS CARD (Manual) */
+        .manual-card {
+            background: rgba(15, 15, 15, 0.98);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        /* MODAL GLASS */
+        .modal-glass {
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(168, 85, 247, 0.2);
+        }
+    </style>
+</head>
+<body class="h-screen w-full bg-black flex flex-col">
+
+    <div id="instruction-modal" class="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-black/90 transition-opacity duration-500">
+        <div class="modal-glass w-full max-w-sm p-6 rounded-3xl relative overflow-hidden text-center shadow-[0_0_50px_rgba(168,85,247,0.2)]">
+            <div class="absolute -top-20 -right-20 w-40 h-40 bg-purple-600/20 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="w-16 h-16 bg-purple-900/30 rounded-full flex items-center justify-center mx-auto mb-5 border border-purple-500/30">
+                <i data-lucide="scan-face" class="w-8 h-8 text-purple-400"></i>
+            </div>
+
+            <h2 class="font-tech text-3xl font-bold text-white mb-1 tracking-wider uppercase">Calibración</h2>
+            <p class="text-[10px] text-gray-400 tracking-[0.3em] uppercase mb-6">Protocolo de Bio-Escaneo</p>
+
+            <div class="space-y-4 text-left mb-8">
+                <div class="flex items-start gap-3">
+                    <span class="text-purple-500 font-bold text-lg mt-[-2px]">1.</span>
+                    <p class="text-xs text-gray-300 leading-relaxed">Limpia el lente de la cámara trasera para evitar errores de lectura.</p>
+                </div>
+                <div class="flex items-start gap-3">
+                    <span class="text-purple-500 font-bold text-lg mt-[-2px]">2.</span>
+                    <p class="text-xs text-gray-300 leading-relaxed">Cubre <strong>TOTALMENTE</strong> la cámara y el flash con tu dedo índice.</p>
+                </div>
+                <div class="flex items-start gap-3">
+                    <span class="text-purple-500 font-bold text-lg mt-[-2px]">3.</span>
+                    <p class="text-xs text-gray-300 leading-relaxed">No presiones fuerte. Solo apoya suavemente para no cortar la circulación.</p>
+                </div>
+            </div>
+
+            <button onclick="startExperience()" class="w-full bg-gradient-to-r from-purple-700 to-purple-600 hover:from-purple-600 hover:to-purple-500 text-white font-tech font-bold py-4 rounded-xl tracking-[0.2em] shadow-lg transition-all uppercase active:scale-95">
+                Iniciar Escaneo
+            </button>
+        </div>
+    </div>
+
+    <section id="view-scanner" class="relative flex-1 w-full h-full flex flex-col items-center justify-center overflow-hidden">
+        <div class="absolute inset-0 bg-[url('boneca_cortisol.png')] bg-cover bg-center opacity-20 pointer-events-none mix-blend-screen"></div>
+
+        <div class="text-center mb-10 z-20">
+            <div class="inline-flex items-center gap-2 border border-purple-500/30 bg-purple-900/20 px-4 py-1.5 rounded-full mb-4">
+                <div class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></div>
+                <span class="text-[10px] font-tech tracking-[0.2em] text-purple-300 font-bold uppercase">Bio-Sensor Activo</span>
+            </div>
+            <h1 class="font-tech text-5xl tracking-[0.1em] text-white font-bold drop-shadow-[0_0_15px_rgba(168,85,247,0.6)]">SCANNER <span class="text-purple-500">VFC</span></h1>
+        </div>
+
+        <div class="relative w-72 h-72 mb-10 shrink-0">
+            <div class="absolute inset-0 border-2 border-purple-500/20 rounded-full animate-[spin_10s_linear_infinite]"></div>
+            <div class="absolute inset-4 border border-purple-500/40 rounded-full border-dashed animate-[spin_15s_linear_infinite_reverse]"></div>
+            <div class="absolute inset-0 rounded-full bg-purple-500/5 blur-xl pulse-ring"></div>
+            
+            <div class="absolute inset-6 rounded-full overflow-hidden border-2 border-purple-500 shadow-[0_0_50px_rgba(168,85,247,0.4)] bg-black flex items-center justify-center">
+                <video id="video" class="hidden" playsinline></video>
+                <canvas id="camera-canvas" class="w-full h-full object-cover opacity-60 absolute inset-0"></canvas>
+                <div class="scan-line z-10"></div>
+                
+                <div id="instruction-overlay" class="relative z-20 flex flex-col items-center justify-center text-center">
+                    <i data-lucide="fingerprint" class="w-16 h-16 text-white/40 mb-3"></i>
+                    <p class="text-[9px] font-tech tracking-[0.2em] px-4 leading-relaxed text-gray-400 font-bold uppercase">
+                        COLOCA TU DEDO SOBRE<br>CÁMARA + FLASH
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="w-full max-w-[280px] h-16 bg-black/50 border border-purple-500/30 rounded-xl mb-6 flex flex-col items-center justify-center backdrop-blur-sm">
+            <span id="bpm-value" class="font-tech text-5xl font-bold text-white tracking-tighter">--</span>
+            <p class="text-[8px] text-gray-500 tracking-[0.4em] uppercase font-bold">BPM Detectado</p>
+        </div>
+
+        <button id="btn-simulate" onclick="forceSimulation()" class="hidden text-[10px] text-gray-600 underline hover:text-purple-400 transition-colors uppercase tracking-widest cursor-pointer z-30">
+            ¿Cámara no funciona? Iniciar Simulación
+        </button>
+    </section>
+
+    <section id="view-manual" class="hidden fixed inset-0 z-50 bg-black flex flex-col h-full w-full overflow-hidden">
+        
+        <div class="shrink-0 pt-8 px-5 bg-black/95 border-b border-white/10 z-20">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="font-tech text-xl text-white tracking-widest flex items-center gap-2">
+                    <i data-lucide="microscope" class="w-5 h-5 text-gray-400"></i> BIO-LAB
+                </h2>
+                <a href="manual.pdf" target="_blank" rel="noopener noreferrer" download="Manual_Bio_Lab_VFC.pdf" class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 hover:border-purple-500/50 transition-all group">
+    <i data-lucide="file-down" class="w-4 h-4 text-purple-400 group-hover:text-white transition-colors"></i>
+    <span class="text-[10px] font-bold text-gray-400 tracking-widest group-hover:text-white transition-colors uppercase">Dossier PDF</span>
+</a>
+            </div>
+
+            <div class="flex justify-between gap-0">
+                <button onclick="switchTab('FACE')" id="tab-FACE" class="flex-1 py-4 text-[11px] font-bold tracking-[0.1em] text-gray-600 border-b-2 border-transparent transition-all">CARA</button>
+                <button onclick="switchTab('BELLY')" id="tab-BELLY" class="flex-1 py-4 text-[11px] font-bold tracking-[0.1em] text-gray-600 border-b-2 border-transparent transition-all uppercase">Abdomen</button>
+                <button onclick="switchTab('SLEEP')" id="tab-SLEEP" class="flex-1 py-4 text-[11px] font-bold tracking-[0.1em] text-gray-600 border-b-2 border-transparent transition-all">SUEÑO</button>
+            </div>
+        </div>
+
+        <div id="manual-content" class="flex-1 overflow-y-auto p-5 space-y-6 pb-32 relative z-10 bg-black">
+            <div class="text-center py-4">
+                <h2 id="result-title" class="text-4xl font-tech font-bold mb-2 tracking-widest uppercase">TITULO</h2>
+                <p id="result-desc" class="text-[11px] text-gray-500 font-light leading-relaxed max-w-xs mx-auto">Descrição.</p>
+            </div>
+            
+            <div id="cards-container" class="space-y-5"></div>
+        </div>
+
+        <div class="fixed bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black via-black to-transparent pt-12 z-30">
+            <button onclick="syncAndReturn()" id="btn-action" class="w-full text-black font-bold font-tech py-4 rounded-xl shadow-xl tracking-[0.2em] transition-all flex items-center justify-center gap-3 uppercase bg-white active:scale-95">
+                <i data-lucide="zap" class="w-5 h-5 fill-current"></i> Activar Protocolo
+            </button>
+        </div>
+    </section>
+
+    <script>
+        const THEMES = {
+            FACE: { color: '#00FFFF', bg: 'rgba(0, 255, 255, 0.08)', border: '#00FFFF88' },
+            BELLY: { color: '#00FF41', bg: 'rgba(0, 255, 65, 0.08)', border: '#00FF4188' },
+            SLEEP: { color: '#8A2BE2', bg: 'rgba(138, 43, 226, 0.08)', border: '#8A2BE288' }
+        };
+
+        const MANUAL_DB = {
+            FACE: {
+                title: "ROSTRO DE LUNA",
+                desc: "Retención hídrica facial severa por exceso de cortisol y bloqueo linfático.",
+                cards: [
+                    { type: 'Mecánico', title: 'Drenaje Linfático', icon: 'waves', text: '3 min al despertar. Drena desde el centro hacia las orejas.' },
+                    { type: 'Biohack', title: 'Elixir Adrenal', icon: 'flask-conical', text: 'Agua tibia + Limón + Sal Marina en ayunas.' },
+                    { type: 'Nutrición', title: 'Dieta Diurética', icon: 'utensils', text: 'Priorizar Pepino, Té de Hibisco y Espárragos.' },
+                    { type: 'Elite Tip', title: 'Choque Térmico', icon: 'snowflake', text: 'Sumerge el rostro en agua con hielo por 15s.' }
+                ]
+            },
+            BELLY: {
+                title: "GRASA VISCERAL",
+                desc: "Protrusión abdominal y 'estômago alto' por hipotonía del transverso e inflamación visceral.",
+                cards: [
+                    { type: 'Mecánico', title: 'Stomach Vacuum', icon: 'move', text: '3 series de 30s en ayunas. Succiona el ombligo.' },
+                    { type: 'Biohack', title: 'Bloqueo LPL', icon: 'ban', text: 'Té de Boldo o Alcachofa 15min antes de comer.' },
+                    { type: 'Nutrición', title: 'Low Insulin', icon: 'utensils', text: 'Cero azúcares. Priorizar grasas buenas y fibra.' },
+                    { type: 'Elite Tip', title: 'Pausa Inflamatoria', icon: 'alert-triangle', text: 'Cero Gluten por 7 dias. Repara tu intestino.' }
+                ]
+            },
+            SLEEP: {
+                title: "ESTRÉS & SUEÑO",
+                desc: "Metabolismo bloqueado por desregulación del eje HPA (insomnio y ansiedad).",
+                cards: [
+                    { type: 'Mecánico', title: 'Protocolo C.A.R.', icon: 'sun', text: 'Exposición solar directa al abrir los ojos.' },
+                    { type: 'Biohack', title: 'Magnesio Pro', icon: 'moon', text: 'Glicinato 1h antes de dormir para relajar el sistema.' },
+                    { type: 'Nutrición', title: 'Cena Ligera', icon: 'utensils', text: 'Kiwi y Nueces. Evitar cafeína después de las 14h.' },
+                    { type: 'Elite Tip', title: 'Blue Block', icon: 'smartphone-off', text: 'Cero luz azul de pantallas después de las 20h.' }
+                ]
+            }
+        };
+
+        let video = document.getElementById('video');
+        let camCanvas = document.getElementById('camera-canvas');
+        let ctx = camCanvas.getContext('2d', { willReadFrequently: true });
+        let progress = 0;
+        let detectedMode = 'BELLY'; 
+        let currentViewMode = 'BELLY';
+        let simulationMode = false;
+
+        function startExperience() {
+            const modal = document.getElementById('instruction-modal');
+            modal.style.opacity = '0';
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                initCamera();
+            }, 500);
+        }
+
+        async function initCamera() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+                video.srcObject = stream;
+                video.play();
+                const track = stream.getVideoTracks()[0];
+                const caps = track.getCapabilities();
+                if (caps.torch) await track.applyConstraints({ advanced: [{ torch: true }] });
+                requestAnimationFrame(loopScanner);
+            } catch (e) {
+                console.warn("Camera fail/simulação", e);
+                document.getElementById('btn-simulate').classList.remove('hidden');
+            }
+        }
+
+        function forceSimulation() {
+            simulationMode = true;
+            document.getElementById('btn-simulate').classList.add('hidden');
+            document.getElementById('instruction-overlay').style.opacity = '0';
+            requestAnimationFrame(loopScanner);
+        }
+
+        function loopScanner() {
+            if(!simulationMode && video.readyState === video.HAVE_ENOUGH_DATA) {
+                ctx.drawImage(video, 0, 0, camCanvas.width, camCanvas.height);
+                const frame = ctx.getImageData(0, 0, camCanvas.width, camCanvas.height);
+                const d = frame.data;
+                let red = 0;
+                for(let i=0; i<d.length; i+=4) red += d[i];
+                red /= (d.length/4);
+                if(red > 100) { progress += 0.5; document.getElementById('instruction-overlay').style.opacity = '0'; } 
+                else { document.getElementById('instruction-overlay').style.opacity = '1'; }
+            } else if (simulationMode) {
+                progress += 0.5;
+            }
+            if(progress % 5 === 0) {
+                document.getElementById('bpm-value').innerText = Math.floor(70 + Math.random()*15);
+            }
+            if(progress < 100) requestAnimationFrame(loopScanner);
+            else finishScan();
+        }
+
+        function finishScan() {
+            const val = parseInt(document.getElementById('bpm-value').innerText);
+            if(val > 80) detectedMode = 'SLEEP'; else if (val > 74) detectedMode = 'BELLY'; else detectedMode = 'FACE';
+            switchTab(detectedMode);
+            document.getElementById('view-scanner').classList.add('hidden');
+            document.getElementById('view-manual').classList.remove('hidden');
+        }
+
+        function switchTab(mode) {
+            currentViewMode = mode;
+            const theme = THEMES[mode];
+            const data = MANUAL_DB[mode];
+            ['FACE', 'BELLY', 'SLEEP'].forEach(m => {
+                const btn = document.getElementById(`tab-${m}`);
+                btn.style.color = (m === mode) ? theme.color : '#4b5563';
+                btn.style.borderBottomColor = (m === mode) ? theme.color : 'transparent';
+            });
+            document.getElementById('result-title').innerText = data.title;
+            document.getElementById('result-title').style.color = theme.color;
+            document.getElementById('result-desc').innerText = data.desc;
+            document.getElementById('btn-action').style.backgroundColor = theme.color;
+            const container = document.getElementById('cards-container');
+            container.innerHTML = data.cards.map(card => `
+                <div class="manual-card p-5 rounded-2xl relative overflow-hidden" style="border-color: ${theme.border}">
+                    <div class="flex items-start justify-between mb-4">
+                        <span class="text-[10px] font-bold tracking-[0.2em] px-3 py-1 rounded-full uppercase" 
+                              style="background-color: ${theme.bg}; color: ${theme.color}; border: 1px solid ${theme.border}">
+                            ${card.type}
+                        </span>
+                        <div class="w-10 h-10 rounded-full flex items-center justify-center shadow-lg" style="background-color: ${theme.bg}">
+                            <i data-lucide="${card.icon}" class="w-5 h-5" style="color: ${theme.color}"></i>
+                        </div>
+                    </div>
+                    <h3 class="font-tech text-xl text-white mb-2 font-bold uppercase tracking-wide">${card.title}</h3>
+                    <p class="text-[11px] text-gray-400 leading-relaxed font-light">${card.text}</p>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        function syncAndReturn() {
+            // REDIRECIONAMENTO PARA INDEX.HTML
+            window.location.href = `index.html?mode=${currentViewMode}`;
+        }
+        
+        lucide.createIcons();
+    </script>
+</body>
+</html>
