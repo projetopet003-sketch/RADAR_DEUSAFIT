@@ -203,20 +203,56 @@
             }, 500);
         }
 
+        // --- 👇 FUNÇÃO BLINDADA COM FLASH "FORÇA BRUTA" 👇 ---
         async function initCamera() {
             try {
-                const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+                // 1. Solicita a câmera traseira
+                const stream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { 
+                        facingMode: 'environment',
+                        width: { ideal: 1280 }, // Tenta forçar resolução HD para melhor leitura
+                        height: { ideal: 720 }
+                    } 
+                });
+                
                 video.srcObject = stream;
-                video.play();
-                const track = stream.getVideoTracks()[0];
-                const caps = track.getCapabilities();
-                if (caps.torch) await track.applyConstraints({ advanced: [{ torch: true }] });
+                
+                // Espera o vídeo realmente começar a tocar
+                video.onloadedmetadata = async () => {
+                    video.play();
+                    
+                    // 2. PROTOCOLO "FORÇA BRUTA" PARA O FLASH
+                    const track = stream.getVideoTracks()[0];
+                    
+                    // Delay tático de 500ms para o hardware estabilizar
+                    setTimeout(async () => {
+                        try {
+                            // Tenta método padrão
+                            await track.applyConstraints({
+                                advanced: [{ torch: true }]
+                            });
+                            console.log("🔦 Nexus: Flash ativado (Método 1)");
+                        } catch (err) {
+                            console.warn("⚠️ Flash Método 1 falhou, tentando Método 2...", err);
+                            try {
+                                // Tenta método alternativo (Legacy)
+                                await track.applyConstraints({
+                                    video: { torch: true }
+                                });
+                            } catch (err2) {
+                                console.warn("❌ Flash não suportado pelo navegador/dispositivo.");
+                            }
+                        }
+                    }, 500);
+                };
+
                 requestAnimationFrame(loopScanner);
             } catch (e) {
                 console.warn("Camera fail/simulação", e);
                 document.getElementById('btn-simulate').classList.remove('hidden');
             }
         }
+        // --- 👆 FIM DA INSERÇÃO 👆 ---
 
         function forceSimulation() {
             simulationMode = true;
@@ -285,9 +321,19 @@
             lucide.createIcons();
         }
 
+        // --- 👇 PERSISTÊNCIA & RETORNO SEGURO 👇 ---
         function syncAndReturn() {
-            // REDIRECIONAMENTO PARA INDEX.HTML
-            window.location.href = `index.html?mode=${currentViewMode}`;
+            // 1. Carrega dados existentes para não perder o perfil do usuário
+            let storage = JSON.parse(localStorage.getItem('radar_deusafit_v4_5') || '{"user":{}}');
+            
+            // 2. Grava o modo detectado pelo Scanner
+            storage.user.activeCortisolMode = currentViewMode;
+            
+            // 3. Salva no bolso do navegador
+            localStorage.setItem('radar_deusafit_v4_5', JSON.stringify(storage));
+            
+            // 4. Redireciona para o index.html (O app principal)
+            window.location.href = "index.html";
         }
         
         lucide.createIcons();
