@@ -529,7 +529,16 @@
 
         function openVipLink() { window.open(CONFIG_LINKS.vip, '_blank'); }
         function toggleConfig() { document.getElementById('config-panel').classList.toggle('hidden'); updateGoalUI(); }
-        function saveConfig() { user.weight = document.getElementById('in-weight').value || 60; user.height = document.getElementById('in-height').value || 165; user.age = document.getElementById('in-age').value || 30; calcMacros(); toggleConfig(); }
+        
+        // A CIRURGIA ESTÁ AQUI: O Escudo Numérico
+        function saveConfig() { 
+            user.weight = Number(document.getElementById('in-weight').value) || 60; 
+            user.height = Number(document.getElementById('in-height').value) || 165; 
+            user.age = Number(document.getElementById('in-age').value) || 30; 
+            calcMacros(); 
+            toggleConfig(); 
+        }
+
         function updateGoalUI() { document.querySelectorAll('.goal-btn').forEach(b => b.classList.remove('active', 'bg-white/20')); const btn = document.getElementById('goal-'+user.goal); if(btn) btn.classList.add('active', 'bg-white/20'); }
         function handleDetoxClick() { if(user.detoxUnlocked) document.getElementById('modal-gallery').classList.remove('hidden'); else openUpsell('RECETAS DETOX'); }
         
@@ -568,4 +577,4 @@
         init();
     </script>
 </body>
-</html>
+                    </html>
