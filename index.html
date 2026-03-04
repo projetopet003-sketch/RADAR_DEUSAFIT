@@ -441,26 +441,23 @@
         }
 
         function resetCortisol() {
-            if (user.scannerMode) {
-                user.scannerMode = null;
-                user.activeCortisolMode = user.quizMode || null;
-                if (user.activeCortisolMode) {
-                    activateCortisol(user.activeCortisolMode); 
-                    saveState();
-                    return; 
-                }
-            }
-
-            user.quizMode = null; user.activeCortisolMode = null; user.quizScores = { FACE: 0, BELLY: 0, SLEEP: 0 }; saveState();
+            // Desliga os modos todos para liberar a calculadora padrão
+            user.scannerMode = null; 
+            user.quizMode = null; 
+            user.activeCortisolMode = null; 
+            saveState();
             
+            // Oculta o painel de cortisol e limpa a seleção dos botões
             document.getElementById('cortisol-card').classList.add('hidden');
             document.querySelectorAll('[id^="btn-"]').forEach(btn => btn.className = "bg-gray-900/40 border border-gray-800 rounded-xl p-3 text-gray-400 transition-all flex flex-col items-center gap-2 group hover:bg-gray-800");
+            
+            // Volta a UI para o status verde normal
             document.getElementById('protocol-status').innerHTML = `<i data-lucide="shield-check" class="w-3 h-3"></i> SISTEMA NORMAL`;
             document.getElementById('protocol-status').className = "text-[10px] text-green-400 font-tech tracking-widest uppercase flex items-center gap-1";
             
-            document.getElementById('app-shell').classList.replace('active-screen', 'hidden-screen');
-            document.getElementById('screen-intro').classList.replace('hidden-screen', 'active-screen');
-            lucide.createIcons(); calcMacros();
+            // Recalcula os macros baseados no Peso/Altura e Objetivo (Cut/Bulk)
+            lucide.createIcons(); 
+            calcMacros();
         }
 
         function openVideo(src, mode) {
@@ -571,4 +568,4 @@
         init();
     </script>
 </body>
-</html>
+                    </html>
