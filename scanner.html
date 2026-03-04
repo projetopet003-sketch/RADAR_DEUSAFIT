@@ -67,6 +67,16 @@
             <button onclick="startExperience()" class="w-full bg-gradient-to-r from-purple-700 to-purple-600 hover:from-purple-600 hover:to-purple-500 text-white font-tech font-bold py-4 rounded-xl tracking-[0.2em] shadow-lg transition-all uppercase active:scale-95">
                 Iniciar Escaneo
             </button>
+            <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #333; text-align: center;">
+    <p style="font-size: 0.6rem; color: #666; line-height: 1.3; font-family: sans-serif; margin: 0;">
+        <span style="color: var(--neon-purple); font-weight: bold;">ℹ️ INFO TÉCNICA:</span> 
+        Tecnología óptica <strong>PPG</strong> (Fotopletismografía) para estimación de VFC. 
+        Mismo principio utilizado por <em>Google Fit™</em> y <em>Welltory™</em>.
+    </p>
+    <p style="font-size: 0.55rem; color: #444; margin-top: 5px;">
+        *Herramienta de Bio-Feedback educativo. No es un dispositivo médico.
+    </p>
+</div>
         </div>
     </div>
 
@@ -203,56 +213,20 @@
             }, 500);
         }
 
-        // --- 👇 FUNÇÃO BLINDADA COM FLASH "FORÇA BRUTA" 👇 ---
         async function initCamera() {
             try {
-                // 1. Solicita a câmera traseira
-                const stream = await navigator.mediaDevices.getUserMedia({ 
-                    video: { 
-                        facingMode: 'environment',
-                        width: { ideal: 1280 }, // Tenta forçar resolução HD para melhor leitura
-                        height: { ideal: 720 }
-                    } 
-                });
-                
+                const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
                 video.srcObject = stream;
-                
-                // Espera o vídeo realmente começar a tocar
-                video.onloadedmetadata = async () => {
-                    video.play();
-                    
-                    // 2. PROTOCOLO "FORÇA BRUTA" PARA O FLASH
-                    const track = stream.getVideoTracks()[0];
-                    
-                    // Delay tático de 500ms para o hardware estabilizar
-                    setTimeout(async () => {
-                        try {
-                            // Tenta método padrão
-                            await track.applyConstraints({
-                                advanced: [{ torch: true }]
-                            });
-                            console.log("🔦 Nexus: Flash ativado (Método 1)");
-                        } catch (err) {
-                            console.warn("⚠️ Flash Método 1 falhou, tentando Método 2...", err);
-                            try {
-                                // Tenta método alternativo (Legacy)
-                                await track.applyConstraints({
-                                    video: { torch: true }
-                                });
-                            } catch (err2) {
-                                console.warn("❌ Flash não suportado pelo navegador/dispositivo.");
-                            }
-                        }
-                    }, 500);
-                };
-
+                video.play();
+                const track = stream.getVideoTracks()[0];
+                const caps = track.getCapabilities();
+                if (caps.torch) await track.applyConstraints({ advanced: [{ torch: true }] });
                 requestAnimationFrame(loopScanner);
             } catch (e) {
                 console.warn("Camera fail/simulação", e);
                 document.getElementById('btn-simulate').classList.remove('hidden');
             }
         }
-        // --- 👆 FIM DA INSERÇÃO 👆 ---
 
         function forceSimulation() {
             simulationMode = true;
@@ -321,19 +295,9 @@
             lucide.createIcons();
         }
 
-        // --- 👇 PERSISTÊNCIA & RETORNO SEGURO 👇 ---
         function syncAndReturn() {
-            // 1. Carrega dados existentes para não perder o perfil do usuário
-            let storage = JSON.parse(localStorage.getItem('radar_deusafit_v4_5') || '{"user":{}}');
-            
-            // 2. Grava o modo detectado pelo Scanner
-            storage.user.activeCortisolMode = currentViewMode;
-            
-            // 3. Salva no bolso do navegador
-            localStorage.setItem('radar_deusafit_v4_5', JSON.stringify(storage));
-            
-            // 4. Redireciona para o index.html (O app principal)
-            window.location.href = "index.html";
+            // REDIRECIONAMENTO PARA INDEX.HTML
+            window.location.href = `index.html?mode=${currentViewMode}`;
         }
         
         lucide.createIcons();
