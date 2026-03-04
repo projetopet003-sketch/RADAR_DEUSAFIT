@@ -67,16 +67,6 @@
             <button onclick="startExperience()" class="w-full bg-gradient-to-r from-purple-700 to-purple-600 hover:from-purple-600 hover:to-purple-500 text-white font-tech font-bold py-4 rounded-xl tracking-[0.2em] shadow-lg transition-all uppercase active:scale-95">
                 Iniciar Escaneo
             </button>
-            <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #333; text-align: center;">
-    <p style="font-size: 0.6rem; color: #666; line-height: 1.3; font-family: sans-serif; margin: 0;">
-        <span style="color: var(--neon-purple); font-weight: bold;">ℹ️ INFO TÉCNICA:</span> 
-        Tecnología óptica <strong>PPG</strong> (Fotopletismografía) para estimación de VFC. 
-        Mismo principio utilizado por <em>Google Fit™</em> y <em>Welltory™</em>.
-    </p>
-    <p style="font-size: 0.55rem; color: #444; margin-top: 5px;">
-        *Herramienta de Bio-Feedback educativo. No es un dispositivo médico.
-    </p>
-</div>
         </div>
     </div>
 
@@ -215,12 +205,36 @@
 
         async function initCamera() {
             try {
-                const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+                const stream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { 
+                        facingMode: 'environment',
+                        width: { ideal: 1280 }, 
+                        height: { ideal: 720 }
+                    } 
+                });
+                
                 video.srcObject = stream;
-                video.play();
-                const track = stream.getVideoTracks()[0];
-                const caps = track.getCapabilities();
-                if (caps.torch) await track.applyConstraints({ advanced: [{ torch: true }] });
+                
+                video.onloadedmetadata = async () => {
+                    video.play();
+                    const track = stream.getVideoTracks()[0];
+                    setTimeout(async () => {
+                        try {
+                            await track.applyConstraints({
+                                advanced: [{ torch: true }]
+                            });
+                        } catch (err) {
+                            try {
+                                await track.applyConstraints({
+                                    video: { torch: true }
+                                });
+                            } catch (err2) {
+                                console.warn("Flash não suportado.");
+                            }
+                        }
+                    }, 500);
+                };
+
                 requestAnimationFrame(loopScanner);
             } catch (e) {
                 console.warn("Camera fail/simulação", e);
@@ -295,9 +309,13 @@
             lucide.createIcons();
         }
 
+        // --- 👇 PERSISTÊNCIA & RETORNO SEGURO 👇 ---
         function syncAndReturn() {
-            // REDIRECIONAMENTO PARA INDEX.HTML
-            window.location.href = `index.html?mode=${currentViewMode}`;
+            let storage = JSON.parse(localStorage.getItem('radar_deusafit_v4_5') || '{"user":{}}');
+            storage.user.scannerMode = currentViewMode;
+            storage.user.activeCortisolMode = currentViewMode;
+            localStorage.setItem('radar_deusafit_v4_5', JSON.stringify(storage));
+            window.location.href = "index.html";
         }
         
         lucide.createIcons();

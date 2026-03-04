@@ -8,75 +8,27 @@
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        /* --- DESIGN SYSTEM ELITE v12.0 --- */
-        :root {
-            --gold: #D4AF37;
-            --purple: #a855f7;
-            --neon-blue: #00f3ff;
-            --danger: #ef4444;
-            --black-deep: #050505;
-        }
-
-        body { 
-            font-family: 'Montserrat', sans-serif; 
-            background-color: var(--black-deep); 
-            color: #e0e0e0;
-            overflow: hidden; 
-            user-select: none;
-            -webkit-tap-highlight-color: transparent;
-        }
-        
+        :root { --gold: #D4AF37; --purple: #a855f7; --neon-blue: #00f3ff; --danger: #ef4444; --black-deep: #050505; }
+        body { font-family: 'Montserrat', sans-serif; background-color: var(--black-deep); color: #e0e0e0; overflow: hidden; user-select: none; -webkit-tap-highlight-color: transparent; }
         .font-tech { font-family: 'Rajdhani', sans-serif; }
-
-        /* SCROLL APENAS NA LISTA */
-        #scroll-content { 
-            overflow-y: auto; 
-            -webkit-overflow-scrolling: touch; 
-            padding-bottom: 120px; 
-        }
+        #scroll-content { overflow-y: auto; -webkit-overflow-scrolling: touch; padding-bottom: 120px; }
         #scroll-content::-webkit-scrollbar { width: 3px; }
         #scroll-content::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
-
-        /* ANIMAÇÕES & STATES */
         .active-screen { display: flex !important; flex-direction: column; animation: fadeIn 0.8s forwards; }
         .hidden-screen { display: none !important; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-        /* EFEITO DE SCANNER BIOMÉTRICO */
-        .scan-gradient {
-            background: linear-gradient(0deg, rgba(168,85,247,0.8) 0%, rgba(236,72,153,0.8) 50%, rgba(59,130,246,0.8) 100%);
-            box-shadow: 0 0 30px rgba(168,85,247, 0.6);
-        }
-
-        /* ESTILOS DOS BOTÕES CORTISOL */
+        .scan-gradient { background: linear-gradient(0deg, rgba(168,85,247,0.8) 0%, rgba(236,72,153,0.8) 50%, rgba(59,130,246,0.8) 100%); box-shadow: 0 0 30px rgba(168,85,247, 0.6); }
         .btn-cortisol-active.FACE { background: rgba(59, 130, 246, 0.15); border-color: #60a5fa; color: #60a5fa; box-shadow: 0 0 20px rgba(59,130,246,0.3); }
         .btn-cortisol-active.BELLY { background: rgba(34, 197, 94, 0.15); border-color: #4ade80; color: #4ade80; box-shadow: 0 0 20px rgba(34,197,94,0.3); }
         .btn-cortisol-active.SLEEP { background: rgba(168, 85, 247, 0.15); border-color: #c084fc; color: #c084fc; box-shadow: 0 0 20px rgba(168,85,247,0.3); }
-
         .goal-btn.active { background: rgba(212, 175, 55, 0.2); border-color: var(--gold); color: var(--gold); font-weight: bold; box-shadow: 0 0 15px rgba(212,175,55,0.2); }
-        
-        /* GLASS CARD & WARNING */
-        .glass-card {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        .warning-card {
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid rgba(239, 68, 68, 0.3);
-            box-shadow: 0 0 20px rgba(239, 68, 68, 0.1);
-        }
-
-        /* NEW: VISUALIZER ONDAS BINAURAIS */
+        .glass-card { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .warning-card { background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); box-shadow: 0 0 20px rgba(239, 68, 68, 0.1); }
         .visualizer-container { display: flex; align-items: center; justify-content: center; gap: 4px; height: 40px; margin: 10px 0; }
         .v-bar { width: 4px; background: #a855f7; border-radius: 4px; height: 10%; transition: 0.2s; }
         .playing .v-bar { animation: sound 0.5s infinite alternate; }
         @keyframes sound { 0% { height: 20%; } 100% { height: 100%; box-shadow: 0 0 10px #a855f7; } }
-        .v-bar:nth-child(1) { animation-delay: 0.1s; } .v-bar:nth-child(2) { animation-delay: 0.3s; }
-        .v-bar:nth-child(3) { animation-delay: 0.5s; } .v-bar:nth-child(4) { animation-delay: 0.2s; }
-        .v-bar:nth-child(5) { animation-delay: 0.4s; }
-
-        /* Checkbox Custom */
+        .v-bar:nth-child(1) { animation-delay: 0.1s; } .v-bar:nth-child(2) { animation-delay: 0.3s; } .v-bar:nth-child(3) { animation-delay: 0.5s; } .v-bar:nth-child(4) { animation-delay: 0.2s; } .v-bar:nth-child(5) { animation-delay: 0.4s; }
         .nexus-check input:checked + div { background-color: var(--gold); border-color: var(--gold); }
         .nexus-check input:checked + div i { opacity: 1; }
     </style>
@@ -156,7 +108,6 @@
     </div>
 
     <div id="app-shell" class="hidden-screen h-full w-full bg-[#050505] flex flex-col relative">
-        
         <header class="z-50 bg-[#080808]/95 backdrop-blur-sm border-b border-white/5 shrink-0">
             <div class="flex justify-between items-center px-5 py-4"> 
                 <button onclick="openVipLink()" class="flex items-center gap-3 group active:scale-95 transition-transform cursor-pointer">
@@ -212,8 +163,7 @@
                 </button>
             </div>
             
-            <div id="cortisol-card" class="hidden mt-4 animate-fade-in border-t border-white/5 pt-4">
-            </div>
+            <div id="cortisol-card" class="hidden mt-4 animate-fade-in border-t border-white/5 pt-4"></div>
         </div>
 
         <main id="scroll-content" class="flex-1 bg-[#050505] p-5">
@@ -227,27 +177,22 @@
             </div>
             <div class="mb-6 mt-2"> <button onclick="window.location.href='scanner.html'" class="w-full group relative overflow-hidden rounded-xl p-[1px] transition-all hover:scale-[1.01] active:scale-95 shadow-lg shadow-purple-900/20">
                     <div class="absolute inset-0 bg-gradient-to-r from-purple-900 via-purple-500 to-purple-900 opacity-40 group-hover:opacity-100 transition-opacity duration-500"></div>
-                    
                     <div class="relative bg-[#080808] rounded-xl p-3 flex items-center justify-between border border-white/5">
                         <div class="flex items-center gap-3">
                             <div class="w-10 h-10 rounded-lg bg-purple-500/10 border border-purple-500/20 flex items-center justify-center relative overflow-hidden">
                                 <div class="absolute inset-0 bg-purple-500/20 animate-pulse"></div>
                                 <i data-lucide="scan-face" class="w-5 h-5 text-purple-400 relative z-10"></i>
                             </div>
-                            
                             <div class="text-left">
                                 <h4 class="font-tech text-white text-sm tracking-[0.2em] font-bold">BIO-SCANNER <span class="text-[8px] text-purple-400 border border-purple-500/30 px-1 rounded ml-1">VFC</span></h4>
                                 <p class="text-[9px] text-gray-500 font-light leading-none mt-1">Descubra la causa oculta de la inflamación.</p>
                             </div>
                         </div>
-                        
                         <i data-lucide="chevron-right" class="w-4 h-4 text-gray-600 group-hover:text-purple-400 transition-colors"></i>
                     </div>
                 </button>
             </div>
-            <div id="food-container" class="space-y-3">
-            <div id="food-container" class="space-y-3">
-            </div>
+            <div id="food-container" class="space-y-3"></div>
 
             <div class="mt-8 warning-card rounded-xl p-4 flex gap-4 animate-pulse">
                 <div class="shrink-0 pt-1">
@@ -291,19 +236,16 @@
             </h3>
             <button onclick="closeExpediente()" class="text-gray-500 hover:text-white"><i data-lucide="x" class="w-6 h-6"></i></button>
         </div>
-        <div id="expediente-content" class="flex-1 overflow-y-auto p-6 space-y-6">
-            </div>
+        <div id="expediente-content" class="flex-1 overflow-y-auto p-6 space-y-6"></div>
     </div>
     
     <div id="modal-upsell" class="fixed inset-0 z-[100] bg-black/90 backdrop-blur-md hidden flex items-center justify-center p-6 animate-fade-in">
         <div id="upsell-card" class="glass-card w-full max-w-sm p-8 rounded-xl border relative overflow-hidden shadow-2xl transition-all">
             <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-500 hover:text-white z-20"><i data-lucide="x" class="w-6 h-6"></i></button>
-            
             <div class="flex justify-center mb-8 relative">
                 <div id="modal-glow" class="absolute inset-0 blur-2xl rounded-full opacity-50"></div>
                 <i id="modal-icon" data-lucide="lock" class="w-20 h-20 relative z-10 stroke-1"></i>
             </div>
-            
             <div class="text-center relative z-10">
                 <h3 id="modal-title" class="font-tech text-3xl mb-4 uppercase tracking-[0.2em] font-light leading-none">TITULO</h3>
                 <p id="modal-desc" class="text-gray-400 text-xs mb-10 leading-relaxed px-4 tracking-wide font-light">Este protocolo de élite está bloqueado. ¿Deseas desbloquear el acceso ahora?</p>
@@ -340,105 +282,35 @@
     <audio id="audio-player" src="sleep_audio.mp3" loop></audio>
 
     <script>
-        // --- 1. DADOS DE CONTEÚDO (NOVOS LINKS E PROTOCOLOS) ---
-        const CONFIG_LINKS = { 
-            vip: "https://chat.whatsapp.com/JWOfIGxUiPCE293Jyaa4Th?mode=gi_t", 
-            detox: "https://pay.hotmart.com/Q104296848Q", 
-            deusa: "https://pay.hotmart.com/G103777959K?checkoutMode=10", 
-            ignicion: "https://pay.hotmart.com/N103638586X" 
-        };
-
+        const CONFIG_LINKS = { vip: "https://chat.whatsapp.com/JWOfIGxUiPCE293Jyaa4Th?mode=gi_t", detox: "https://pay.hotmart.com/Q104296848Q", deusa: "https://pay.hotmart.com/G103777959K?checkoutMode=10", ignicion: "https://pay.hotmart.com/N103638586X" };
         const PROTOCOLS = {
-            FACE: {
-                title: "ROSTRO DE LUNA", sub: "Drenaje Linfático Facial", color: "blue", videoId: "5fthkvcofy",
-                desc: "1. Lava tu rostro con agua fría.<br>2. Aplica aceite facial.<br>3. Con los nudillos, masajea desde la barbilla hasta las orejas (10x).<br>4. Masajea desde la nariz hacia afuera.",
-                steps: [ {id:'f1', l:'Drenaje Manual 3min'}, {id:'f2', l:'Elixir Adrenal (Agua+Sal)'}, {id:'f3', l:'Choque Térmico (Hielo)'} ]
-            },
-            BELLY: {
-                title: "GORDURA VISCERAL", sub: "Vacuum & Anti-LPL", color: "green", videoId: "p5vmstgamc",
-                desc: "1. En ayunas, exhala todo el aire de tus pulmones.<br>2. Sin inhalar, mete el ombligo hacia adentro y arriba.<br>3. Aguanta 10-15 segundos.<br>4. Inhala suavemente y repite 3 veces.",
-                steps: [ {id:'b1', l:'Vacuum Abdominal (3x)'}, {id:'b2', l:'Té Amargo (Boldo)'}, {id:'b3', l:'Cero Gluten Hoy'} ]
-            },
-            SLEEP: {
-                title: "CICLO CIRCADIANO", sub: "Reset Eje HPA", color: "purple", audioOnly: true,
-                desc: "1. Apaga luces blancas 1h antes de dormir.<br>2. Ponte audífonos.<br>3. Dale play al audio y respira profundo (4s inhalar, 7s retener, 8s exhalar).",
-                steps: [ {id:'s1', l:'Sol Matutino (10min)'}, {id:'s2', l:'Magnesio (500mg)'}, {id:'s3', l:'Audio Delta (30min)'} ]
-            }
+            FACE: { title: "ROSTRO DE LUNA", sub: "Drenaje Linfático Facial", color: "blue", videoId: "5fthkvcofy", desc: "1. Lava tu rostro con agua fría.<br>2. Aplica aceite facial.<br>3. Con los nudillos, masajea desde la barbilla hasta las orejas (10x).<br>4. Masajea desde la nariz hacia afuera.", steps: [ {id:'f1', l:'Drenaje Manual 3min'}, {id:'f2', l:'Elixir Adrenal (Agua+Sal)'}, {id:'f3', l:'Choque Térmico (Hielo)'} ] },
+            BELLY: { title: "GORDURA VISCERAL", sub: "Vacuum & Anti-LPL", color: "green", videoId: "p5vmstgamc", desc: "1. En ayunas, exhala todo el aire de tus pulmones.<br>2. Sin inhalar, mete el ombligo hacia adentro y arriba.<br>3. Aguanta 10-15 segundos.<br>4. Inhala suavemente y repite 3 veces.", steps: [ {id:'b1', l:'Vacuum Abdominal (3x)'}, {id:'b2', l:'Té Amargo (Boldo)'}, {id:'b3', l:'Cero Gluten Hoy'} ] },
+            SLEEP: { title: "CICLO CIRCADIANO", sub: "Reset Eje HPA", color: "purple", audioOnly: true, desc: "1. Apaga luces blancas 1h antes de dormir.<br>2. Ponte audífonos.<br>3. Dale play al audio y respira profundo (4s inhalar, 7s retener, 8s exhalar).", steps: [ {id:'s1', l:'Sol Matutino (10min)'}, {id:'s2', l:'Magnesio (500mg)'}, {id:'s3', l:'Audio Delta (30min)'} ] }
         };
-
         const db = [
-            // LISTA ORIGINAL DE 52 ALIMENTOS (MANTIDA)
-            { id: 'p1', name: 'Pechuga de Pollo', unit: '1 Filete', icon: '🍗', type: 'prot', kcal: 120, p: 23, c: 0, f: 2.5 },
-            { id: 'p2', name: 'Carne Molida Magra', unit: '100g', icon: '🥩', type: 'prot', kcal: 180, p: 20, c: 0, f: 10 },
-            { id: 'p3', name: 'Lomo de Cerdo', unit: '1 Filete', icon: '🥓', type: 'prot', kcal: 145, p: 21, c: 0, f: 6 },
-            { id: 'p4', name: 'Huevo Entero', unit: '1 Unidad', icon: '🥚', type: 'prot', kcal: 72, p: 6, c: 0.5, f: 5 },
-            { id: 'p5', name: 'Claras de Huevo', unit: '3 Unidades', icon: '🍳', type: 'prot', kcal: 51, p: 11, c: 0, f: 0 },
-            { id: 'p6', name: 'Tilapia/Pescado', unit: '1 Filete', icon: '🐟', type: 'prot', kcal: 96, p: 20, c: 0, f: 1.7 },
-            { id: 'p7', name: 'Salmón', unit: '100g', icon: '🍣', type: 'prot', kcal: 208, p: 20, c: 0, f: 13 },
-            { id: 'p8', name: 'Atún en Agua', unit: '1 Lata', icon: '🥫', type: 'prot', kcal: 100, p: 22, c: 0, f: 1 },
-            { id: 'p9', name: 'Camarones', unit: '100g', icon: '🦐', type: 'prot', kcal: 99, p: 24, c: 0, f: 0.3 },
-            { id: 'p10', name: 'Yogur Griego', unit: '1 Taza', icon: '🥣', type: 'prot', kcal: 100, p: 10, c: 4, f: 0 },
-            { id: 'p11', name: 'Queso Cottage', unit: '1/2 Taza', icon: '🧀', type: 'prot', kcal: 81, p: 14, c: 3, f: 1 },
-            { id: 'p12', name: 'Whey Protein', unit: '1 Scoop', icon: '🥤', type: 'prot', kcal: 110, p: 24, c: 2, f: 1 },
-            { id: 'p13', name: 'Tofu', unit: '100g', icon: '🧊', type: 'prot', kcal: 76, p: 8, c: 2, f: 4 },
-            { id: 'p14', name: 'Pavo (Turkey)', unit: '100g', icon: '🦃', type: 'prot', kcal: 104, p: 29, c: 0, f: 2 },
-            { id: 'p15', name: 'Sardinas', unit: '1 Lata', icon: '🐟', type: 'prot', kcal: 190, p: 23, c: 0, f: 10 },
-            { id: 'c1', name: 'Arroz Blanco', unit: '1 Taza', icon: '🍚', type: 'carb', kcal: 130, p: 2, c: 28, f: 0 },
-            { id: 'c2', name: 'Arroz Integral', unit: '1 Taza', icon: '🌾', type: 'carb', kcal: 110, p: 3, c: 23, f: 1 },
-            { id: 'c3', name: 'Avena', unit: '1/2 Taza', icon: '🥣', type: 'carb', kcal: 150, p: 5, c: 27, f: 3 },
-            { id: 'c4', name: 'Quinoa', unit: '1 Taza', icon: '🥗', type: 'carb', kcal: 120, p: 4, c: 21, f: 2 },
-            { id: 'c5', name: 'Papa Cocida', unit: '1 Mediana', icon: '🥔', type: 'carb', kcal: 110, p: 3, c: 26, f: 0 },
-            { id: 'c6', name: 'Camote/Batata', unit: '1 Mediana', icon: '🍠', type: 'carb', kcal: 103, p: 2, c: 24, f: 0 },
-            { id: 'c7', name: 'Plátano', unit: '1 Unidad', icon: '🍌', type: 'carb', kcal: 105, p: 1, c: 27, f: 0 },
-            { id: 'c8', name: 'Frijoles Negros', unit: '1/2 Taza', icon: '🫘', type: 'carb', kcal: 114, p: 8, c: 20, f: 0.5 },
-            { id: 'c9', name: 'Lentejas', unit: '1/2 Taza', icon: '🥘', type: 'carb', kcal: 115, p: 9, c: 20, f: 0.4 },
-            { id: 'c10', name: 'Garbanzos', unit: '1/2 Taza', icon: '🧆', type: 'carb', kcal: 134, p: 7, c: 22, f: 2 },
-            { id: 'c11', name: 'Tortilla Maíz', unit: '1 Unidad', icon: '🌮', type: 'carb', kcal: 52, p: 1, c: 11, f: 0.7 },
-            { id: 'c12', name: 'Pan Integral', unit: '1 Rebanada', icon: '🍞', type: 'carb', kcal: 80, p: 4, c: 14, f: 1 },
-            { id: 'c13', name: 'Pasta', unit: '1 Taza', icon: '🍝', type: 'carb', kcal: 150, p: 5, c: 30, f: 1 },
-            { id: 'c14', name: 'Arepa (Maíz)', unit: '1 Med.', icon: '🫓', type: 'carb', kcal: 180, p: 4, c: 35, f: 2 },
-            { id: 'c15', name: 'Manzana', unit: '1 Unidad', icon: '🍎', type: 'carb', kcal: 95, p: 0, c: 25, f: 0 },
-            { id: 'c16', name: 'Yuca (Mandioca)', unit: '100g', icon: '🪵', type: 'carb', kcal: 160, p: 1, c: 38, f: 0 },
-            { id: 'c17', name: 'Piña', unit: '1 Taza', icon: '🍍', type: 'carb', kcal: 82, p: 1, c: 21, f: 0 },
-            { id: 'f1', name: 'Aguacate/Palta', unit: '1/4 Unidad', icon: '🥑', type: 'fat', kcal: 80, p: 1, c: 4, f: 7 },
-            { id: 'f2', name: 'Aceite de Oliva', unit: '1 Cuch.', icon: '🫒', type: 'fat', kcal: 119, p: 0, c: 0, f: 13.5 },
-            { id: 'f3', name: 'Aceite de Coco', unit: '1 Cuch.', icon: '🥥', type: 'fat', kcal: 117, p: 0, c: 0, f: 14 },
-            { id: 'f4', name: 'Mantequilla Maní', unit: '1 Cuch.', icon: '🥜', type: 'fat', kcal: 94, p: 4, c: 3, f: 8 },
-            { id: 'f5', name: 'Almendras', unit: '10 Un.', icon: '🌰', type: 'fat', kcal: 70, p: 3, c: 2, f: 6 },
-            { id: 'f6', name: 'Nueces', unit: '5 Un.', icon: '🥜', type: 'fat', kcal: 90, p: 2, c: 2, f: 9 },
-            { id: 'f7', name: 'Choco 70% Dark', unit: '1 Cuad.', icon: '🍫', type: 'fat', kcal: 50, p: 1, c: 4, f: 4 },
-            { id: 'f8', name: 'Semillas Chia', unit: '1 Cuch.', icon: '🌱', type: 'fat', kcal: 69, p: 2, c: 6, f: 4 },
-            { id: 'v1', name: 'Brócoli', unit: '1 Taza', icon: '🥦', type: 'veg', kcal: 30, p: 2, c: 6, f: 0 },
-            { id: 'v2', name: 'Espinaca', unit: '1 Taza', icon: '🍃', type: 'veg', kcal: 7, p: 1, c: 1, f: 0 },
-            { id: 'v3', name: 'Zanahoria', unit: '1 Mediana', icon: '🥕', type: 'veg', kcal: 25, p: 1, c: 6, f: 0 },
-            { id: 'v4', name: 'Ensalada Mix', unit: 'Libre', icon: '🥗', type: 'veg', kcal: 15, p: 1, c: 3, f: 0 },
-            { id: 'v5', name: 'Calabacín', unit: '1 Taza', icon: '🥒', type: 'veg', kcal: 20, p: 1, c: 4, f: 0 },
-            { id: 'v6', name: 'Tomate', unit: '1 Unidad', icon: '🍅', type: 'veg', kcal: 22, p: 1, c: 5, f: 0 },
-            { id: 'v7', name: 'Espárragos', unit: '5 Un.', icon: '🎍', type: 'veg', kcal: 20, p: 2, c: 4, f: 0 },
-            { id: 'x1', name: 'Pizza', unit: '1 Rebanada', icon: '🍕', type: 'cheat', kcal: 285, p: 12, c: 36, f: 10 },
-            { id: 'x2', name: 'Hamburguesa', unit: '1 Unidad', icon: '🍔', type: 'cheat', kcal: 500, p: 25, c: 45, f: 25 },
-            { id: 'x3', name: 'Papas Fritas', unit: '1 Porción', icon: '🍟', type: 'cheat', kcal: 300, p: 3, c: 40, f: 15 },
-            { id: 'x4', name: 'Helado', unit: '1 Bola', icon: '🍦', type: 'cheat', kcal: 150, p: 3, c: 20, f: 7 },
-            { id: 'x5', name: 'Cerveza', unit: '1 Lata', icon: '🍺', type: 'cheat', kcal: 150, p: 1, c: 13, f: 0 },
-            { id: 'x6', name: 'Vino Tinto', unit: '1 Copa', icon: '🍷', type: 'cheat', kcal: 125, p: 0, c: 4, f: 0 },
-            { id: 'x7', name: 'Galletas', unit: '2 Un.', icon: '🍪', type: 'cheat', kcal: 140, p: 1, c: 20, f: 7 }
+            { id: 'p1', name: 'Pechuga de Pollo', unit: '1 Filete', icon: '🍗', type: 'prot', kcal: 120, p: 23, c: 0, f: 2.5 }, { id: 'p2', name: 'Carne Molida Magra', unit: '100g', icon: '🥩', type: 'prot', kcal: 180, p: 20, c: 0, f: 10 }, { id: 'p3', name: 'Lomo de Cerdo', unit: '1 Filete', icon: '🥓', type: 'prot', kcal: 145, p: 21, c: 0, f: 6 }, { id: 'p4', name: 'Huevo Entero', unit: '1 Unidad', icon: '🥚', type: 'prot', kcal: 72, p: 6, c: 0.5, f: 5 }, { id: 'p5', name: 'Claras de Huevo', unit: '3 Unidades', icon: '🍳', type: 'prot', kcal: 51, p: 11, c: 0, f: 0 }, { id: 'p6', name: 'Tilapia/Pescado', unit: '1 Filete', icon: '🐟', type: 'prot', kcal: 96, p: 20, c: 0, f: 1.7 }, { id: 'p7', name: 'Salmón', unit: '100g', icon: '🍣', type: 'prot', kcal: 208, p: 20, c: 0, f: 13 }, { id: 'p8', name: 'Atún en Agua', unit: '1 Lata', icon: '🥫', type: 'prot', kcal: 100, p: 22, c: 0, f: 1 }, { id: 'p9', name: 'Camarones', unit: '100g', icon: '🦐', type: 'prot', kcal: 99, p: 24, c: 0, f: 0.3 }, { id: 'p10', name: 'Yogur Griego', unit: '1 Taza', icon: '🥣', type: 'prot', kcal: 100, p: 10, c: 4, f: 0 }, { id: 'p11', name: 'Queso Cottage', unit: '1/2 Taza', icon: '🧀', type: 'prot', kcal: 81, p: 14, c: 3, f: 1 }, { id: 'p12', name: 'Whey Protein', unit: '1 Scoop', icon: '🥤', type: 'prot', kcal: 110, p: 24, c: 2, f: 1 }, { id: 'p13', name: 'Tofu', unit: '100g', icon: '🧊', type: 'prot', kcal: 76, p: 8, c: 2, f: 4 }, { id: 'p14', name: 'Pavo (Turkey)', unit: '100g', icon: '🦃', type: 'prot', kcal: 104, p: 29, c: 0, f: 2 }, { id: 'p15', name: 'Sardinas', unit: '1 Lata', icon: '🐟', type: 'prot', kcal: 190, p: 23, c: 0, f: 10 }, { id: 'c1', name: 'Arroz Blanco', unit: '1 Taza', icon: '🍚', type: 'carb', kcal: 130, p: 2, c: 28, f: 0 }, { id: 'c2', name: 'Arroz Integral', unit: '1 Taza', icon: '🌾', type: 'carb', kcal: 110, p: 3, c: 23, f: 1 }, { id: 'c3', name: 'Avena', unit: '1/2 Taza', icon: '🥣', type: 'carb', kcal: 150, p: 5, c: 27, f: 3 }, { id: 'c4', name: 'Quinoa', unit: '1 Taza', icon: '🥗', type: 'carb', kcal: 120, p: 4, c: 21, f: 2 }, { id: 'c5', name: 'Papa Cocida', unit: '1 Mediana', icon: '🥔', type: 'carb', kcal: 110, p: 3, c: 26, f: 0 }, { id: 'c6', name: 'Camote/Batata', unit: '1 Mediana', icon: '🍠', type: 'carb', kcal: 103, p: 2, c: 24, f: 0 }, { id: 'c7', name: 'Plátano', unit: '1 Unidad', icon: '🍌', type: 'carb', kcal: 105, p: 1, c: 27, f: 0 }, { id: 'c8', name: 'Frijoles Negros', unit: '1/2 Taza', icon: '🫘', type: 'carb', kcal: 114, p: 8, c: 20, f: 0.5 }, { id: 'c9', name: 'Lentejas', unit: '1/2 Taza', icon: '🥘', type: 'carb', kcal: 115, p: 9, c: 20, f: 0.4 }, { id: 'c10', name: 'Garbanzos', unit: '1/2 Taza', icon: '🧆', type: 'carb', kcal: 134, p: 7, c: 22, f: 2 }, { id: 'c11', name: 'Tortilla Maíz', unit: '1 Unidad', icon: '🌮', type: 'carb', kcal: 52, p: 1, c: 11, f: 0.7 }, { id: 'c12', name: 'Pan Integral', unit: '1 Rebanada', icon: '🍞', type: 'carb', kcal: 80, p: 4, c: 14, f: 1 }, { id: 'c13', name: 'Pasta', unit: '1 Taza', icon: '🍝', type: 'carb', kcal: 150, p: 5, c: 30, f: 1 }, { id: 'c14', name: 'Arepa (Maíz)', unit: '1 Med.', icon: '🫓', type: 'carb', kcal: 180, p: 4, c: 35, f: 2 }, { id: 'c15', name: 'Manzana', unit: '1 Unidad', icon: '🍎', type: 'carb', kcal: 95, p: 0, c: 25, f: 0 }, { id: 'c16', name: 'Yuca (Mandioca)', unit: '100g', icon: '🪵', type: 'carb', kcal: 160, p: 1, c: 38, f: 0 }, { id: 'c17', name: 'Piña', unit: '1 Taza', icon: '🍍', type: 'carb', kcal: 82, p: 1, c: 21, f: 0 }, { id: 'f1', name: 'Aguacate/Palta', unit: '1/4 Unidad', icon: '🥑', type: 'fat', kcal: 80, p: 1, c: 4, f: 7 }, { id: 'f2', name: 'Aceite de Oliva', unit: '1 Cuch.', icon: '🫒', type: 'fat', kcal: 119, p: 0, c: 0, f: 13.5 }, { id: 'f3', name: 'Aceite de Coco', unit: '1 Cuch.', icon: '🥥', type: 'fat', kcal: 117, p: 0, c: 0, f: 14 }, { id: 'f4', name: 'Mantequilla Maní', unit: '1 Cuch.', icon: '🥜', type: 'fat', kcal: 94, p: 4, c: 3, f: 8 }, { id: 'f5', name: 'Almendras', unit: '10 Un.', icon: '🌰', type: 'fat', kcal: 70, p: 3, c: 2, f: 6 }, { id: 'f6', name: 'Nueces', unit: '5 Un.', icon: '🥜', type: 'fat', kcal: 90, p: 2, c: 2, f: 9 }, { id: 'f7', name: 'Choco 70% Dark', unit: '1 Cuad.', icon: '🍫', type: 'fat', kcal: 50, p: 1, c: 4, f: 4 }, { id: 'f8', name: 'Semillas Chia', unit: '1 Cuch.', icon: '🌱', type: 'fat', kcal: 69, p: 2, c: 6, f: 4 }, { id: 'v1', name: 'Brócoli', unit: '1 Taza', icon: '🥦', type: 'veg', kcal: 30, p: 2, c: 6, f: 0 }, { id: 'v2', name: 'Espinaca', unit: '1 Taza', icon: '🍃', type: 'veg', kcal: 7, p: 1, c: 1, f: 0 }, { id: 'v3', name: 'Zanahoria', unit: '1 Mediana', icon: '🥕', type: 'veg', kcal: 25, p: 1, c: 6, f: 0 }, { id: 'v4', name: 'Ensalada Mix', unit: 'Libre', icon: '🥗', type: 'veg', kcal: 15, p: 1, c: 3, f: 0 }, { id: 'v5', name: 'Calabacín', unit: '1 Taza', icon: '🥒', type: 'veg', kcal: 20, p: 1, c: 4, f: 0 }, { id: 'v6', name: 'Tomate', unit: '1 Unidad', icon: '🍅', type: 'veg', kcal: 22, p: 1, c: 5, f: 0 }, { id: 'v7', name: 'Espárragos', unit: '5 Un.', icon: '🎍', type: 'veg', kcal: 20, p: 2, c: 4, f: 0 }, { id: 'x1', name: 'Pizza', unit: '1 Rebanada', icon: '🍕', type: 'cheat', kcal: 285, p: 12, c: 36, f: 10 }, { id: 'x2', name: 'Hamburguesa', unit: '1 Unidad', icon: '🍔', type: 'cheat', kcal: 500, p: 25, c: 45, f: 25 }, { id: 'x3', name: 'Papas Fritas', unit: '1 Porción', icon: '🍟', type: 'cheat', kcal: 300, p: 3, c: 40, f: 15 }, { id: 'x4', name: 'Helado', unit: '1 Bola', icon: '🍦', type: 'cheat', kcal: 150, p: 3, c: 20, f: 7 }, { id: 'x5', name: 'Cerveza', unit: '1 Lata', icon: '🍺', type: 'cheat', kcal: 150, p: 1, c: 13, f: 0 }, { id: 'x6', name: 'Vino Tinto', unit: '1 Copa', icon: '🍷', type: 'cheat', kcal: 125, p: 0, c: 4, f: 0 }, { id: 'x7', name: 'Galletas', unit: '2 Un.', icon: '🍪', type: 'cheat', kcal: 140, p: 1, c: 20, f: 7 }
         ];
 
-        // --- STATE MANAGEMENT ---
-        let user = { weight: 60, height: 165, age: 30, goal: 'cut', activeCortisolMode: null, detoxUnlocked: false, targetKcal: 0, targetProt: 0, targetCarb: 0, targetFat: 0, quizScores: { FACE: 0, BELLY: 0, SLEEP: 0 } };
+        let user = { weight: 60, height: 165, age: 30, goal: 'cut', quizMode: null, scannerMode: null, activeCortisolMode: null, detoxUnlocked: false, targetKcal: 0, targetProt: 0, targetCarb: 0, targetFat: 0, quizScores: { FACE: 0, BELLY: 0, SLEEP: 0 } };
         let consumed = {};
         let dailyChecks = {};
         let scanTimer = null;
         let isPlaying = false;
 
         function init() {
-            // LOAD STORAGE
             const saved = localStorage.getItem('radar_deusafit_v4_5');
             if(saved) {
                 const parsed = JSON.parse(saved);
                 user = {...user, ...parsed.user};
                 consumed = parsed.consumed || {};
                 dailyChecks = parsed.dailyChecks || {};
+            }
+
+            if (user.scannerMode) {
+                user.activeCortisolMode = user.scannerMode;
+            } else if (user.quizMode) {
+                user.activeCortisolMode = user.quizMode;
             }
 
             document.getElementById('in-weight').value = user.weight;
@@ -453,7 +325,6 @@
             renderList();
             updateGoalUI();
 
-            // Se já tem modo definido, esconde intro e mostra app
             if(user.activeCortisolMode) {
                 document.getElementById('screen-intro').classList.replace('active-screen', 'hidden-screen');
                 document.getElementById('app-shell').classList.replace('hidden-screen', 'active-screen');
@@ -461,17 +332,12 @@
             }
         }
 
-        function saveState() {
-            localStorage.setItem('radar_deusafit_v4_5', JSON.stringify({ user, consumed, dailyChecks }));
-        }
+        function saveState() { localStorage.setItem('radar_deusafit_v4_5', JSON.stringify({ user, consumed, dailyChecks })); }
 
-        // --- SCANNER ---
         function startScan(e) {
             e.preventDefault();
             if (navigator.vibrate) navigator.vibrate([30, 40, 30]); 
-            const btn = document.getElementById('fingerprint-btn');
-            const fill = document.getElementById('scan-fill');
-            const icon = document.getElementById('scan-icon');
+            const btn = document.getElementById('fingerprint-btn'); const fill = document.getElementById('scan-fill'); const icon = document.getElementById('scan-icon');
             btn.classList.add('scale-95'); icon.classList.add('text-white');
             fill.style.transition = 'height 1.8s ease-in-out'; fill.style.height = '100%';
             scanTimer = setTimeout(() => { login(); }, 1800); 
@@ -479,9 +345,7 @@
 
         function endScan() {
             if (navigator.vibrate) navigator.vibrate(0);
-            const btn = document.getElementById('fingerprint-btn');
-            const fill = document.getElementById('scan-fill');
-            const icon = document.getElementById('scan-icon');
+            const btn = document.getElementById('fingerprint-btn'); const fill = document.getElementById('scan-fill'); const icon = document.getElementById('scan-icon');
             clearTimeout(scanTimer);
             btn.classList.remove('scale-95'); icon.classList.remove('text-white');
             fill.style.transition = 'height 0.3s'; fill.style.height = '0%';
@@ -490,34 +354,23 @@
         function login() {
             if (navigator.vibrate) navigator.vibrate(100);
             document.getElementById('screen-intro').classList.replace('active-screen', 'hidden-screen'); 
-            
-            // Se já fez quiz, vai pro app, senão vai pro quiz
-            if(user.activeCortisolMode) {
-                document.getElementById('app-shell').classList.replace('hidden-screen', 'active-screen');
-            } else {
-                document.getElementById('screen-quiz').classList.replace('hidden-screen', 'active-screen');
-            }
+            if(user.activeCortisolMode) { document.getElementById('app-shell').classList.replace('hidden-screen', 'active-screen'); } 
+            else { document.getElementById('screen-quiz').classList.replace('hidden-screen', 'active-screen'); }
             lucide.createIcons();
         }
 
-        // --- QUIZ LOGIC (5 QUESTIONS) ---
-        function answerQuiz(type, qNum) {
-            if(type !== 'NORMAL') user.quizScores[type]++;
-            nextQ(qNum + 1);
-        }
+        function answerQuiz(type, qNum) { if(type !== 'NORMAL') user.quizScores[type]++; nextQ(qNum + 1); }
 
         function nextQ(q) { 
             document.querySelectorAll('.quiz-step').forEach(el => el.classList.add('hidden')); 
             const nextEl = document.getElementById('q'+q);
-            if(nextEl) nextEl.classList.remove('hidden');
-            else finishQuiz();
+            if(nextEl) nextEl.classList.remove('hidden'); else finishQuiz();
         }
 
         function finishQuiz() {
             document.querySelectorAll('.quiz-step').forEach(el => el.classList.add('hidden')); 
             document.getElementById('processing').classList.remove('hidden'); 
             
-            // Lógica de Vencedor
             let winner = 'FACE';
             const s = user.quizScores;
             if(s.BELLY > s.FACE && s.BELLY >= s.SLEEP) winner = 'BELLY';
@@ -526,17 +379,19 @@
             setTimeout(() => { 
                 document.getElementById('screen-quiz').classList.replace('active-screen', 'hidden-screen'); 
                 document.getElementById('app-shell').classList.replace('hidden-screen', 'active-screen'); 
-                activateCortisol(winner);
-                openVideo(null, winner); // Abre o diagnóstico direto
+                
+                user.quizMode = winner;
+                if (!user.scannerMode) { activateCortisol(winner); } 
+                else { activateCortisol(user.scannerMode); }
+                saveState();
+
+                openVideo(null, user.activeCortisolMode); 
             }, 2000); 
         }
 
-        // --- CALCULADORA (INTOCADA + SAVE STATE) ---
         function calcMacros() {
-            let tmb = (10 * user.weight) + (6.25 * user.height) - (5 * user.age) - 161;
-            let target = tmb * 1.3;
-            if(user.goal === 'cut') target -= 400; if(user.goal === 'bulk') target += 300;
-            user.targetKcal = Math.round(target);
+            let tmb = (10 * user.weight) + (6.25 * user.height) - (5 * user.age) - 161; let target = tmb * 1.3;
+            if(user.goal === 'cut') target -= 400; if(user.goal === 'bulk') target += 300; user.targetKcal = Math.round(target);
             if (user.activeCortisolMode === 'BELLY') {
                 user.targetProt = Math.round(user.weight * 2.5); user.targetCarb = 50; 
                 let remain = user.targetKcal - (user.targetProt * 4) - (user.targetCarb * 4); user.targetFat = Math.max(0, Math.round(remain / 9));
@@ -552,13 +407,11 @@
                 else { user.targetProt = Math.round(user.weight * 1.8); user.targetFat = Math.round(user.weight * 0.9); }
                 let remain = user.targetKcal - (user.targetProt * 4) - (user.targetFat * 9); user.targetCarb = Math.max(0, Math.round(remain / 4));
             }
-            saveState(); // Salva sempre que calcula
-            updateHUD();
+            saveState(); updateHUD();
         }
 
         function setGoal(g) { user.goal = g; updateGoalUI(); calcMacros(); }
 
-        // --- CORTISOL LOGIC (ATUALIZADA) ---
         function activateCortisol(mode) {
             user.activeCortisolMode = mode;
             document.querySelectorAll('[id^="btn-"]').forEach(btn => btn.className = "bg-gray-900/40 border border-gray-800 rounded-xl p-3 text-gray-400 transition-all flex flex-col items-center gap-2 group hover:bg-gray-800");
@@ -584,60 +437,53 @@
             document.getElementById('protocol-status').innerHTML = `<i data-lucide="activity" class="w-3 h-3"></i> MODO: ${mode}`;
             document.getElementById('protocol-status').className = `text-[10px] text-${color}-400 font-tech tracking-widest uppercase animate-pulse flex items-center gap-1`;
             
-            lucide.createIcons(); 
-            calcMacros();
+            lucide.createIcons(); calcMacros();
         }
 
         function resetCortisol() {
-            user.activeCortisolMode = null;
+            if (user.scannerMode) {
+                user.scannerMode = null;
+                user.activeCortisolMode = user.quizMode || null;
+                if (user.activeCortisolMode) {
+                    activateCortisol(user.activeCortisolMode); 
+                    saveState();
+                    return; 
+                }
+            }
+
+            user.quizMode = null; user.activeCortisolMode = null; user.quizScores = { FACE: 0, BELLY: 0, SLEEP: 0 }; saveState();
+            
             document.getElementById('cortisol-card').classList.add('hidden');
             document.querySelectorAll('[id^="btn-"]').forEach(btn => btn.className = "bg-gray-900/40 border border-gray-800 rounded-xl p-3 text-gray-400 transition-all flex flex-col items-center gap-2 group hover:bg-gray-800");
             document.getElementById('protocol-status').innerHTML = `<i data-lucide="shield-check" class="w-3 h-3"></i> SISTEMA NORMAL`;
             document.getElementById('protocol-status').className = "text-[10px] text-green-400 font-tech tracking-widest uppercase flex items-center gap-1";
+            
+            document.getElementById('app-shell').classList.replace('active-screen', 'hidden-screen');
+            document.getElementById('screen-intro').classList.replace('hidden-screen', 'active-screen');
             lucide.createIcons(); calcMacros();
         }
 
-        // --- SMART MODAL (EXPEDIENTE) ---
         function openVideo(src, mode) {
-            const modal = document.getElementById('modal-expediente');
-            const content = document.getElementById('expediente-content');
-            modal.classList.remove('hidden');
-            
-            const data = PROTOCOLS[mode];
-            
+            const modal = document.getElementById('modal-expediente'); const content = document.getElementById('expediente-content');
+            modal.classList.remove('hidden'); const data = PROTOCOLS[mode];
             let mediaHTML = '';
             if(data.audioOnly) {
                 mediaHTML = `
                 <div class="bg-purple-900/10 border border-purple-500/20 rounded-xl p-6 text-center">
-                    <div id="visualizer" class="visualizer-container mb-4">
-                        <div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div>
-                    </div>
+                    <div id="visualizer" class="visualizer-container mb-4"><div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div></div>
                     <button onclick="toggleAudio()" class="mx-auto flex items-center gap-2 px-6 py-3 rounded-full bg-purple-500 hover:bg-purple-400 text-white font-bold tracking-widest transition-all shadow-[0_0_20px_rgba(168,85,247,0.4)]">
                         <i id="play-icon" data-lucide="play" class="w-5 h-5 fill-current"></i> <span id="play-btn-text">INICIAR FRECUENCIA</span>
                     </button>
                     <p class="text-[9px] text-gray-500 mt-4 uppercase tracking-widest">Use audífonos para efecto binaural</p>
                 </div>`;
-            } else {
-                mediaHTML = `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://fast.wistia.net/embed/iframe/${data.videoId}?videoFoam=true" style="height:100%;left:0;position:absolute;top:0;width:100%;" frameborder="0" allowfullscreen></iframe></div>`;
-            }
+            } else { mediaHTML = `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://fast.wistia.net/embed/iframe/${data.videoId}?videoFoam=true" style="height:100%;left:0;position:absolute;top:0;width:100%;" frameborder="0" allowfullscreen></iframe></div>`; }
 
             content.innerHTML = `
-                <div class="mb-6">
-                    <h2 class="text-2xl text-white font-tech uppercase tracking-widest mb-1 text-${data.color}-400">${data.title}</h2>
-                    <p class="text-xs text-gray-400">${data.sub}</p>
-                </div>
-                
+                <div class="mb-6"><h2 class="text-2xl text-white font-tech uppercase tracking-widest mb-1 text-${data.color}-400">${data.title}</h2><p class="text-xs text-gray-400">${data.sub}</p></div>
                 <h4 class="text-xs text-white font-bold mb-2 uppercase tracking-widest">¿CÓMO HACERLO?</h4>
-                <div class="bg-white/5 p-4 rounded-lg text-xs text-gray-300 leading-relaxed mb-6 border-l-2 border-${data.color}-500">
-                    ${data.desc}
-                </div>
-
-                <div class="glass-card p-1 rounded-xl border border-white/10 overflow-hidden mb-6">
-                    ${mediaHTML}
-                </div>
-                
-                <div class="space-y-4">
-                    <h4 class="text-xs text-white font-bold uppercase tracking-widest">CHECKLIST DIARIO</h4>
+                <div class="bg-white/5 p-4 rounded-lg text-xs text-gray-300 leading-relaxed mb-6 border-l-2 border-${data.color}-500">${data.desc}</div>
+                <div class="glass-card p-1 rounded-xl border border-white/10 overflow-hidden mb-6">${mediaHTML}</div>
+                <div class="space-y-4"><h4 class="text-xs text-white font-bold uppercase tracking-widest">CHECKLIST DIARIO</h4>
                     ${data.steps.map(step => {
                         const isChecked = dailyChecks[step.id] ? 'checked' : '';
                         return `
@@ -646,55 +492,28 @@
                             <div class="w-6 h-6 rounded border border-white/20 flex items-center justify-center shrink-0 transition-all group-hover:border-${data.color}-500">
                                 <i data-lucide="check" class="w-4 h-4 text-black opacity-0 transition-opacity"></i>
                             </div>
-                            <div>
-                                <h4 class="text-sm text-gray-200 font-bold group-hover:text-${data.color}-400 transition-colors">${step.l}</h4>
-                            </div>
+                            <div><h4 class="text-sm text-gray-200 font-bold group-hover:text-${data.color}-400 transition-colors">${step.l}</h4></div>
                         </label>`;
                     }).join('')}
-                </div>
-            `;
+                </div>`;
             lucide.createIcons();
         }
 
-        function closeExpediente() {
-            document.getElementById('modal-expediente').classList.add('hidden');
-            const audio = document.getElementById('audio-player');
-            audio.pause(); isPlaying = false;
-        }
-
-        function toggleCheck(id) {
-            dailyChecks[id] = !dailyChecks[id];
-            saveState();
-        }
+        function closeExpediente() { document.getElementById('modal-expediente').classList.add('hidden'); const audio = document.getElementById('audio-player'); audio.pause(); isPlaying = false; }
+        function toggleCheck(id) { dailyChecks[id] = !dailyChecks[id]; saveState(); }
 
         function toggleAudio() {
-            const audio = document.getElementById('audio-player');
-            const viz = document.getElementById('visualizer');
-            const btn = document.getElementById('play-btn-text');
-            const icon = document.getElementById('play-icon');
-            
-            if(isPlaying) {
-                audio.pause();
-                viz.classList.remove('playing');
-                btn.innerText = "INICIAR FRECUENCIA";
-                icon.setAttribute('data-lucide', 'play');
-            } else {
-                audio.play().catch(e => alert("Error: sleep_audio.mp3 no encontrado"));
-                viz.classList.add('playing');
-                btn.innerText = "PAUSAR SESIÓN";
-                icon.setAttribute('data-lucide', 'pause');
-            }
-            isPlaying = !isPlaying;
-            lucide.createIcons();
+            const audio = document.getElementById('audio-player'); const viz = document.getElementById('visualizer'); const btn = document.getElementById('play-btn-text'); const icon = document.getElementById('play-icon');
+            if(isPlaying) { audio.pause(); viz.classList.remove('playing'); btn.innerText = "INICIAR FRECUENCIA"; icon.setAttribute('data-lucide', 'play'); } 
+            else { audio.play().catch(e => alert("Error: sleep_audio.mp3 no encontrado")); viz.classList.add('playing'); btn.innerText = "PAUSAR SESIÓN"; icon.setAttribute('data-lucide', 'pause'); }
+            isPlaying = !isPlaying; lucide.createIcons();
         }
 
-        // --- MANUTENÇÃO LISTA ALIMENTOS (INTOCADA) ---
         function resetFood() { if(confirm("¿Borrar consumo diario?")) { consumed = {}; saveState(); updateHUD(); renderList(); } }
         function renderList() {
             const container = document.getElementById('food-container');
             container.innerHTML = db.map(item => {
-                const count = consumed[item.id] || 0;
-                const isDanger = item.type === 'cheat';
+                const count = consumed[item.id] || 0; const isDanger = item.type === 'cheat';
                 const activeClass = count > 0 ? (isDanger ? "border-red-500 bg-red-900/10" : "border-gold bg-white/5") : "border-white/5";
                 let typeColor = "text-gray-500"; let typeLabel = item.type;
                 if(item.type==='prot') typeColor="text-blue-400"; if(item.type==='carb') typeColor="text-yellow-400"; if(item.type==='fat') typeColor="text-orange-400";
@@ -711,78 +530,40 @@
             document.getElementById('val-fat').innerText = `${Math.round(totalF)}/${user.targetFat}g`; document.getElementById('main-bar').style.width = Math.min((totalKcal / user.targetKcal) * 100, 100) + '%';
         }
 
-        // --- LINKS / MODALS ---
         function openVipLink() { window.open(CONFIG_LINKS.vip, '_blank'); }
         function toggleConfig() { document.getElementById('config-panel').classList.toggle('hidden'); updateGoalUI(); }
-        function saveConfig() { 
-            user.weight = document.getElementById('in-weight').value || 60; 
-            user.height = document.getElementById('in-height').value || 165;
-            user.age = document.getElementById('in-age').value || 30;
-            calcMacros(); toggleConfig(); 
-        }
+        function saveConfig() { user.weight = document.getElementById('in-weight').value || 60; user.height = document.getElementById('in-height').value || 165; user.age = document.getElementById('in-age').value || 30; calcMacros(); toggleConfig(); }
         function updateGoalUI() { document.querySelectorAll('.goal-btn').forEach(b => b.classList.remove('active', 'bg-white/20')); const btn = document.getElementById('goal-'+user.goal); if(btn) btn.classList.add('active', 'bg-white/20'); }
         function handleDetoxClick() { if(user.detoxUnlocked) document.getElementById('modal-gallery').classList.remove('hidden'); else openUpsell('RECETAS DETOX'); }
         
-        // --- FUNÇÃO DO MODAL ATUALIZADA (CIRURGIA FEITA AQUI) ---
         function openUpsell(t) { 
             document.getElementById('modal-upsell').classList.remove('hidden'); 
-            const title = document.getElementById('modal-title'); 
-            const btn = document.getElementById('modal-btn'); 
-            const icon = document.getElementById('modal-icon');
-            const card = document.getElementById('upsell-card');
-            const glow = document.getElementById('modal-glow');
-            const desc = document.getElementById('modal-desc');
+            const title = document.getElementById('modal-title'); const btn = document.getElementById('modal-btn'); const icon = document.getElementById('modal-icon');
+            const card = document.getElementById('upsell-card'); const glow = document.getElementById('modal-glow'); const desc = document.getElementById('modal-desc');
 
-            // Reset classes
             card.className = "w-full max-w-sm p-8 rounded-xl border relative overflow-hidden shadow-2xl transition-all";
 
             if(t === 'RECETAS DETOX') { 
-                title.innerText = "RECETAS ALQUÍMICAS"; 
-                btn.innerText = "DESBLOQUEAR AHORA";
-                btn.href = CONFIG_LINKS.detox; 
-                icon.setAttribute('data-lucide', 'flask-conical');
-                
-                // Estilo Verde Neon (Print 1)
-                card.style.background = "#000";
-                card.style.borderColor = "#22c55e"; // Green-500
-                glow.style.backgroundColor = "#22c55e";
+                title.innerText = "RECETAS ALQUÍMICAS"; btn.innerText = "DESBLOQUEAR AHORA"; btn.href = CONFIG_LINKS.detox; icon.setAttribute('data-lucide', 'flask-conical');
+                card.style.background = "#000"; card.style.borderColor = "#22c55e"; glow.style.backgroundColor = "#22c55e";
                 title.className = "font-tech text-3xl mb-4 uppercase tracking-[0.2em] font-light leading-none text-white";
                 btn.className = "block w-full bg-green-600 text-black font-bold font-tech py-4 text-center tracking-[0.2em] rounded-lg shadow-lg hover:shadow-green-500/50 transition-all";
-                icon.style.color = "#4ade80"; // Green-400
+                icon.style.color = "#4ade80";
             } 
-            
             if(t === 'DEUSA') { 
-                title.innerText = "RETO DEUSA 21"; 
-                title.innerHTML = "RETO DEUSA<br><span class='text-5xl font-bold'>21</span>";
-                btn.innerText = "DESBLOQUEAR AHORA";
-                btn.href = CONFIG_LINKS.deusa; 
-                icon.setAttribute('data-lucide', 'crown');
-
-                // Estilo Dourado (Print 2)
-                card.style.background = "#000";
-                card.style.borderColor = "#D4AF37"; // Gold
-                glow.style.backgroundColor = "#D4AF37";
+                title.innerHTML = "RETO DEUSA<br><span class='text-5xl font-bold'>21</span>"; btn.innerText = "DESBLOQUEAR AHORA"; btn.href = CONFIG_LINKS.deusa; icon.setAttribute('data-lucide', 'crown');
+                card.style.background = "#000"; card.style.borderColor = "#D4AF37"; glow.style.backgroundColor = "#D4AF37";
                 title.className = "font-tech text-3xl mb-4 uppercase tracking-[0.2em] font-light leading-none text-white";
                 btn.className = "block w-full bg-yellow-600 text-black font-bold font-tech py-4 text-center tracking-[0.2em] rounded-lg shadow-lg hover:shadow-yellow-500/50 transition-all";
                 icon.style.color = "#D4AF37";
             } 
-            
             if(t === 'IGNICION') { 
-                title.innerText = "SISTEMA RESE7E"; 
-                title.innerHTML = "SISTEMA<br>RESE7E";
-                btn.innerText = "DESBLOQUEAR AHORA";
-                btn.href = CONFIG_LINKS.ignicion; 
-                icon.setAttribute('data-lucide', 'zap');
-
-                // Estilo Roxo (Print 3)
-                card.style.background = "#000";
-                card.style.borderColor = "#a855f7"; // Purple-500
-                glow.style.backgroundColor = "#a855f7";
+                title.innerHTML = "SISTEMA<br>RESE7E"; btn.innerText = "DESBLOQUEAR AHORA"; btn.href = CONFIG_LINKS.ignicion; icon.setAttribute('data-lucide', 'zap');
+                card.style.background = "#000"; card.style.borderColor = "#a855f7"; glow.style.backgroundColor = "#a855f7";
                 title.className = "font-tech text-3xl mb-4 uppercase tracking-[0.2em] font-light leading-none text-white";
                 btn.className = "block w-full bg-purple-600 text-black font-bold font-tech py-4 text-center tracking-[0.2em] rounded-lg shadow-lg hover:shadow-purple-500/50 transition-all";
-                icon.style.color = "#c084fc"; // Purple-400
+                icon.style.color = "#c084fc";
             } 
-            
             lucide.createIcons(); 
         }
         function closeModal() { document.getElementById('modal-upsell').classList.add('hidden'); }
@@ -790,4 +571,4 @@
         init();
     </script>
 </body>
-        </html>
+</html>
